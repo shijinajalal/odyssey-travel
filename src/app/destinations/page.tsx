@@ -1,0 +1,6 @@
+import type {Metadata} from 'next'
+import {destinations} from '@/lib/content'
+import {DestinationGallery,SectionIntro} from '@/components/cards'
+import {PageHero,SimpleCta} from '@/components/page'
+export const metadata:Metadata={title:'Explore destinations',description:'Find the place that’s been on your mind. Explore considered travel inspiration from Odyssey Travel.',alternates:{canonical:'/destinations'}}
+export default function Destinations(){return <main><PageHero label="A WORLD OF POSSIBILITY" title={<>Find the place<br/>that <em>finds you.</em></>} copy="A first idea is all it takes. Wander through a few of our favourite corners of the world, then let’s make one feel like yours." image="hero-alpine"/><section className="section"><div className="section-container"><SectionIntro label="GO WHERE YOU FEEL CALLED" title={<>The world is wonderfully <em>wide.</em></>} copy="Every destination here is a starting point, not a fixed itinerary. Choose one that catches your eye and we can begin imagining the rest."/><DestinationGallery/></div></section><section className="destination-count"><span>{String(destinations.length).padStart(2,'0')} places to begin with</span><p>And a world of possibilities beyond them.</p></section><SimpleCta/></main>}
