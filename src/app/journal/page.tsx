@@ -1,0 +1,5 @@
+import type {Metadata} from 'next'
+import {JournalCards,SectionIntro} from '@/components/cards'
+import {PageHero,SimpleCta} from '@/components/page'
+export const metadata:Metadata={title:'The travel journal',description:'A collection of travel inspiration and thoughtful ideas for wherever the world takes you next.',alternates:{canonical:'/journal'}}
+export default function Journal(){return <main><PageHero label="NOTES FROM THE WIDE WORLD" title={<>A little inspiration<br/>for <em>the road.</em></>} copy="Stories, ideas, and small details to take with you—whether you’re planning the next trip or just dreaming about it." image="switzerland"/><section className="section"><div className="section-container"><SectionIntro label="FIELD NOTES & FRESH PERSPECTIVES" title={<>Stories from <em>somewhere</em><br/>beautiful.</>} copy="A considered collection of travel inspiration. Think of these as places to start—not a substitute for up-to-date local travel advice."/><JournalCards/></div></section><SimpleCta/></main>}
