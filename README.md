@@ -17,9 +17,15 @@ The local development server binds to `0.0.0.0` for preview environments.
 ## What’s included
 
 - Responsive homepage, destination and journey galleries, destination/package detail pages, travel styles, about, journal/article pages, contact, planning form, FAQ, and policy pages.
+- A pinned GSAP/ScrollTrigger hero that scrubs the existing Google Flow clip forward and backward with scroll. The original 8-second, 1280×720 H.264 video (2.9 MB, 24 fps) is served from `public/videos/Miniature_car_driving_on_map_20261026174302.mp4`; a JPEG extracted from its first frame is the poster. No autoplay is used, and reduced-motion users keep the still poster and accessible hero content without pinning.
 - Shared navigation/footer, mobile menu, keyboard focus styles, reduced-motion support, scroll reveals, loading/error/404 states, and an optional configured WhatsApp link.
+
 - SEO metadata, per-page titles/descriptions, a sitemap and robots route. The sitemap is empty and robots omits its sitemap reference until `NEXT_PUBLIC_SITE_URL` is set; use the real canonical production origin before deployment.
 - Server-side enquiry validation, a honeypot, a small in-memory per-process rate limit, and optional delivery to a verified business inbox through Resend. The API returns an error (not a success message) until delivery is configured.
+
+### Hero video QA note
+
+The supplied MP4 is a small 24 fps H.264 clip; stream inspection found an initial keyframe followed by P-frames only. The local server returns byte-range responses, but a long GOP can make repeated random seeks slower on some mobile decoders. The original source is kept intact rather than silently re-encoded. Validate scrubbing on target iOS/Android devices; if visible seeking lag occurs, produce an approved web-optimized encode from this same source with frequent keyframes (roughly every 12–24 frames at 24 fps) and fast-start metadata, then use that optimized asset.
 
 ## Enquiry delivery
 
