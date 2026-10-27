@@ -13,6 +13,7 @@ export function CinematicHero() {
   const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const copyRef = useRef<HTMLDivElement>(null)
+  const storyRef = useRef<HTMLDivElement>(null)
   const [duration, setDuration] = useState(0)
   const [videoReady, setVideoReady] = useState(false)
   const [videoFailed, setVideoFailed] = useState(false)
@@ -54,7 +55,8 @@ export function CinematicHero() {
     }
     const section = sectionRef.current
     const copy = copyRef.current
-    if (!video || !section || !copy || !videoReady || !duration || videoFailed) return
+    const story = storyRef.current
+    if (!video || !section || !copy || !story || !videoReady || !duration || videoFailed) return
 
     gsap.registerPlugin(ScrollTrigger)
     const media = gsap.matchMedia()
@@ -142,6 +144,28 @@ export function CinematicHero() {
         ease: 'none',
       }, 0.1)
 
+      const storyBeats = story.querySelectorAll<HTMLElement>('.cinematic-beat')
+      const beatMoments = [0.28, 0.51, 0.74]
+      storyBeats.forEach((beat, index) => {
+        const start = beatMoments[index]
+        const fadeOutAt = index === storyBeats.length - 1 ? 0.92 : start + 0.19
+        timeline.fromTo(beat, {
+          autoAlpha: 0,
+          y: 12,
+        }, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.05,
+          ease: 'none',
+        }, start)
+        timeline.to(beat, {
+          autoAlpha: 0,
+          y: -8,
+          duration: 0.05,
+          ease: 'none',
+        }, fadeOutAt)
+      })
+
       const refreshFrame = requestAnimationFrame(() => ScrollTrigger.refresh())
       return () => {
         cancelAnimationFrame(refreshFrame)
@@ -159,7 +183,7 @@ export function CinematicHero() {
   }, [duration, videoReady, videoFailed])
 
   return (
-    <section ref={sectionRef} className={`cinematic-hero${videoFailed ? ' cinematic-hero-fallback' : ''}`} aria-label="Odyssey Travel cinematic journey">
+    <section ref={sectionRef} className={`cinematic-hero${videoFailed ? ' cinematic-hero-fallback' : ''}${videoFailed || reducedMotion ? ' cinematic-hero-static' : ''}`} aria-label="Odyssey Travel cinematic journey">
       <div className="cinematic-poster" aria-hidden="true" />
       <video
         ref={videoRef}
@@ -186,6 +210,16 @@ export function CinematicHero() {
           <Link href="/destinations" className="button button-light">Explore destinations <ArrowRight size={17} /></Link>
           <Link href="/plan-your-trip" className="cinematic-secondary">Plan your journey <ArrowRight size={16} /></Link>
         </div>
+      </div>
+      <div className="cinematic-story" ref={storyRef} aria-hidden="true">
+        <p className="cinematic-beat">Every great journey begins with <em>curiosity.</em></p>
+        <p className="cinematic-beat">Follow the road beyond the <em>familiar.</em></p>
+        <p className="cinematic-beat">Find a story that’s <em>yours.</em></p>
+      </div>
+      <div className="sr-only">
+        <p>Every great journey begins with curiosity.</p>
+        <p>Follow the road beyond the familiar.</p>
+        <p>Find a story that’s yours.</p>
       </div>
       <div className="cinematic-scroll-cue" aria-hidden="true">
         <span>{videoFailed || reducedMotion ? 'SCROLL TO DISCOVER' : 'SCROLL TO TRAVEL'}</span>
